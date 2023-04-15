@@ -1,5 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from finite_difference import FDM
+
+'''
+    Reference:
+    [1]: https://zhuanlan.zhihu.com/p/543086700
+    
+       y' = x^3 e^x
+       y(x) = (x^3-3x^2+6x-6)e^x + 6
+    
+'''
 
 
 def get_basis(x, order=3):
@@ -42,9 +52,12 @@ def main():
         a = get_a(x, order=order)
         y_galerkin = np.einsum('i, ij->j', a, basis)
         plt.plot(x, y_galerkin, linestyle='--', lw=3, label='Galerkin order=%d' % order)
+
+    x = np.linspace(0, 3, 1000)
+    plt.plot(x, FDM(x), lw=5, label='FDM', alpha=0.5)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+    plt.savefig('./img/comparison_solution.png', dpi=200)
     return
 
 
