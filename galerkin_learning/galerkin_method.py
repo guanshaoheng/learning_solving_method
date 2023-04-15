@@ -42,7 +42,8 @@ def get_a(x, order):
 
 
 def main():
-    x = np.linspace(0, 3, 50)
+    x_end = 3
+    x = np.linspace(0, x_end, 50)
     y_accurate = (x**3-3*x**2+6*x-6)*np.exp(x) + 6
     index = np.arange(0, len(x), len(x)//10+1)
     plt.scatter(x[index], y_accurate[index], c='r', lw = 3, label='Accurate')
@@ -53,7 +54,7 @@ def main():
         y_galerkin = np.einsum('i, ij->j', a, basis)
         plt.plot(x, y_galerkin, linestyle='--', lw=3, label='Galerkin order=%d' % order)
 
-    x = np.linspace(0, 3, 1000)
+    x = np.linspace(0, x_end, 1000)
     plt.plot(x, FDM(x), lw=5, label='FDM', alpha=0.5)
     plt.legend()
     plt.tight_layout()
