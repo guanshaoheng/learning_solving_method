@@ -25,7 +25,10 @@ if __name__ == "__main__":
     n = 1001
     x_0, x_end = 0, 3.
     dx = (x_end - x_0) / (n - 1)
+    fig = plt.figure()
+    ax = plt.subplot(111)
     x = np.linspace(x_0, x_end, n)
     y = FDM(x)
     plt.plot(x, y)
+    plt.tight_layout()
     plt.show()

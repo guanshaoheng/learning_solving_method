@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from finite_difference import FDM
+from galerkin_FEM import FEM
 
 '''
     Reference:
@@ -46,7 +47,9 @@ def main():
     x = np.linspace(0, x_end, 50)
     y_accurate = (x**3-3*x**2+6*x-6)*np.exp(x) + 6
     index = np.arange(0, len(x), len(x)//10+1)
-    plt.scatter(x[index], y_accurate[index], c='r', lw = 3, label='Accurate')
+
+    fig = plt.figure()
+    plt.scatter(x[index], y_accurate[index], c='r', label='Accurate')
 
     for order in [2, 3, 4, 5]:
         basis = get_basis(x, order=order)
@@ -54,8 +57,15 @@ def main():
         y_galerkin = np.einsum('i, ij->j', a, basis)
         plt.plot(x, y_galerkin, linestyle='--', lw=3, label='Galerkin order=%d' % order)
 
+    # FDM
     x = np.linspace(0, x_end, 1000)
     plt.plot(x, FDM(x), lw=5, label='FDM', alpha=0.5)
+
+    # FEM
+    for num_ele in [5, 20]:
+        x, u = FEM(num_ele=num_ele)
+        plt.plot(x, u, lw=8, label='FEM %d' % num_ele, alpha=0.5)
+
     plt.legend()
     plt.tight_layout()
     plt.savefig('./img/comparison_solution.png', dpi=200)
