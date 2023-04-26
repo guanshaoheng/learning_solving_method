@@ -105,6 +105,7 @@ def plot_particles(xx: np.ndarray, r: float, step: int):
     plt.plot([11, 11], [-1, 6], linewidth=3, c='k')
     plt.plot([0, 11], [0, 0], linewidth=3, c='k')
     plt.axis('equal')
+    plt.axis('off')
     plt.title('Step %d' % step)
     plt.show()
 
