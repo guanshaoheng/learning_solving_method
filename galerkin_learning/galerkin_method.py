@@ -49,6 +49,10 @@ def main():
     index = np.arange(0, len(x), len(x)//10+1)
 
     fig = plt.figure()
+    # plt.style.use('ggplot')
+    # plt.style.use('Solarize_Light2')
+    plt.style.use('tableau-colorblind10')
+    # plt.style.use('fivethirtyeight')
     plt.scatter(x[index], y_accurate[index], c='r', label='Accurate')
 
     for order in [2, 3, 4, 5]:
@@ -68,7 +72,8 @@ def main():
 
     plt.legend()
     plt.tight_layout()
-    plt.savefig('./img/comparison_solution.png', dpi=200)
+    plt.show()
+    # plt.savefig('./img/comparison_solution.png', dpi=200)
     return
 
 

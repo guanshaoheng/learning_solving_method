@@ -197,7 +197,7 @@ def update():
             v[i] *= ti.exp(-dh * 5)
 
     # enforce boundary condition
-    for i in range(N):
+    for i in range(N):   # apply the boundary condition from the mouth clicking
         if picking[None]:
             r = x[i] - curser[None]
             if r.norm() < curser_radius:
@@ -205,12 +205,13 @@ def update():
                 v[i] = ti.Vector([0.0, 0.0])
                 pass
 
-    for j in range(N_y):
+    for j in range(N_y):  # apply the boundary condition to the nodes on left side
         ind = ij_2_index(0, j)
-        v[ind] = ti.Vector([0, 0])
+        v[ind] = ti.Vector([0, 0])  # set the velocity to 0
         x[ind] = ti.Vector([init_x, init_y + j * dx])  # rest pose attached to the wall
+                                                       # (set the position as original configuration)
 
-    for i in range(N):
+    for i in range(N):  # 约束住模型不会在x方向上移动到 y=init_x 右边
         if x[i][0] < init_x:
             x[i][0] = init_x
             v[i][0] = 0
