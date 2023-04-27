@@ -7,37 +7,42 @@
 # Deep Ritz方法
 
 ## 求解颗粒系统 Particle systems
+当前难以解决的问题：
+- 无法模拟系统在牛顿第二定律控制下的运动过程；
+- 尚未论证该结果为系统最优结果，目前尚处于近似真实结果的阶段；
+- 如何处理摩擦耗散、粘性问题？
+
 
 ### 密集堆积系统
 - 对于密集堆积的颗粒系统我们能够看到，优化过程能够得到最终的稳定平衡状态，但是其运动过程没有**牛顿第二定律**的控制，也忽略了**颗粒间的摩擦耗散**作用。
 
-| ![space-1.jpg](./deepRitz_particle/img/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/step_1000.png) |
+| ![space-1.jpg](deepRitz_particle/img/dense/step_0.png) | ![space-1.jpg](deepRitz_particle/img/dense/step_1000.png) |
 |:--:| :--:| 
 | **Initial state** |**Optimized 1000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/step_3000.png) |
+| ![space-1.jpg](deepRitz_particle/img/dense/step_2000.png) | ![space-1.jpg](deepRitz_particle/img/dense/step_3000.png) |
 | **Optimized 2000 steps** |**Optimized 3000 steps**|
 
 
 ### 稳定的最终状态
 - 然后我们采用倒三角的初始堆积，模拟过程如图所示：
 
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing/step_1000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/stable/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/stable/step_1000.png) |
 |:--:| :--:| 
 | **Initial state** |**Optimized 1000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing/step_3000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/stable/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/stable/step_3000.png) |
 | **Optimized 2000 steps** |**Optimized 3000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing/step_5000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/stable/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/stable/step_5000.png) |
 | **Optimized 4000 steps** |**final state (stable)**|
 
 ### 不稳定的最终状态
 - 然后，采用倒三角的初始堆积，而且并未将颗粒错开，模拟过程如图所示：
 
-| ![space-1.jpg](./deepRitz_particle/img/unstable_packing/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/unstable_packing/step_1000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/unstable/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/unstable/step_1000.png) |
 |:--:| :--:| 
 | **Initial state** |**Optimized 1000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/unstable_packing/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/unstable_packing/step_3000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/unstable/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/unstable/step_3000.png) |
 | **Optimized 2000 steps** |**Optimized 3000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/unstable_packing/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/unstable_packing/step_5000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/unstable/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/unstable/step_5000.png) |
 | **Optimized 4000 steps** |**final state (unstable)**|
 
 - 上述不同结果源于不同初始堆积，在第一种堆积中我们得到了优化后的稳定结果最终整体势能为2.2e5，而后者我们得到的整体势能为5.4e5，远高于前者。
@@ -49,21 +54,21 @@
 ### 引入微小不稳定因素的初始状态求解
 本例中，小球的半径为0.1，我们在最下方的红色小球处添加一个**水平向右的0.001**的微小扰动，计算结果如下所示：
 
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_bottom/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_bottom/step_1000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/disturbed_bottom/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/disturbed_bottom/step_1000.png) |
 |:--:| :--:| 
 | **Initial state** |**Optimized 1000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_bottom/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_bottom/step_3000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/disturbed_bottom/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/disturbed_bottom/step_3000.png) |
 | **Optimized 2000 steps** |**Optimized 3000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_bottom/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_bottom/step_5000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/disturbed_bottom/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/disturbed_bottom/step_5000.png) |
 | **Optimized 4000 steps** |**final state (unstable)**|
 
 然后，在第一列最上方的小球处，我们添加一个水平向左的0.001的微小扰动，计算结果如下所示：
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_top/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_top/step_1000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/disturbed_top/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/disturbed_top/step_1000.png) |
 |:--:| :--:| 
 | **Initial state** |**Optimized 1000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_top/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_top/step_3000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/disturbed_top/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/disturbed_top/step_3000.png) |
 | **Optimized 2000 steps** |**Optimized 3000 steps**|
-| ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_top/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/stable_packing_distrurbed_top/step_5000.png) |
+| ![space-1.jpg](./deepRitz_particle/img/disturbed_top/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/disturbed_top/step_5000.png) |
 | **Optimized 4000 steps** |**final state (unstable)**|
 
 - 由此可见，只要添加非常微小的扰动，Adam优化算法就能够根据整体的能量优化到最终平衡的位置；
