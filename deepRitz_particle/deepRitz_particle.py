@@ -1,25 +1,8 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-
-
-def findDevice(useGPU=True):
-    print()
-    print('-' * 80)
-    if useGPU and torch.cuda.is_available():
-        device = torch.device('cuda')
-        echo('\t%s is used in this calculation' % torch.cuda.get_device_name(0))
-    else:
-        device = torch.device('cpu')
-        echo('\tOnly CPU is used in this calculation')
-    return device
-
-
-def echo(*args):
-    print('\n' + '=' * 80)
-    for i in args:
-        print('\t%s' % i)
-
+from utils.general import check_mkdir, echo
+from utils.utils_torch import findDevice
 
 def main(
         num_particles=50,
@@ -32,11 +15,20 @@ def main(
     g = 9.8
 
     # particle positions
-    X, Y = np.meshgrid(np.linspace(1, 10, 10), np.linspace(1, 5, 5))
-    X += np.array([r, 0, r, 0, r]).reshape([-1, 1])
-    xx = np.concatenate((X.reshape(-1, 1), Y.reshape(-1, 1)), axis=1)
+    # X, Y = np.meshgrid(np.linspace(1, 10, 10), np.linspace(1, 5, 5))
+    # X += np.array([r, 0, r, 0, r]).reshape([-1, 1])
+    # xx = np.concatenate((X.reshape(-1, 1), Y.reshape(-1, 1)), axis=1)
 
-    plot_particles(xx, r, step=0)
+    xx = []
+    for i in range(3, 8):
+        for j in range(i-2, 8-2):
+            xx.append([i, j])
+            # xx.append([i+(j%2)*r, j])
+    xx = np.array(xx, dtype=float)
+    # xx[4, 0] -= 0.01
+    xx[0, 0] += 0.01
+
+    plot_particles(xx, r, step=0, disturbed_index=0)
 
     # set a torch tensor to save the particles' coordinates
     x = torch.tensor(xx, device=device).float().requires_grad_()
@@ -75,9 +67,11 @@ def main(
         energy.backward()
         optimizer.step()
 
-        if i % 1000 == 0 and i!=0:
+        if i % 1000 == 0 and i != 0:
             x_numpy = x.cpu().detach().numpy()
-            plot_particles(xx=x_numpy, r=r, step=i)
+            plot_particles(
+                xx=x_numpy, r=r, step=i,
+                energy=energy.item(), energy_potential=energy_potential.item(), energy_contact=energy_contact.item())
     return
 
 
@@ -94,10 +88,15 @@ def overlap_check(x: torch.Tensor, r):
     return overlap
 
 
-def plot_particles(xx: np.ndarray, r: float, step: int):
+def plot_particles(xx: np.ndarray, r: float, step: int,
+                   energy=None, energy_potential=None, energy_contact=None,
+                   disturbed_index=None):
     fig, ax = plt.subplots()
     for i in range(len(xx)):
-        c = plt.Circle(xx[i], r, edgecolor='k')
+        if disturbed_index != i:
+            c = plt.Circle(xx[i], r, edgecolor='k')
+        else:
+            c = plt.Circle(xx[i], r, color='r')
         ax.add_patch(c)
     plt.xlim([0, 11])
     plt.ylim([-1, 6])
@@ -106,8 +105,15 @@ def plot_particles(xx: np.ndarray, r: float, step: int):
     plt.plot([0, 11], [0, 0], linewidth=3, c='k')
     plt.axis('equal')
     plt.axis('off')
-    plt.title('Step %d' % step)
-    plt.show()
+    if step == 0:
+        plt.title(r'$ \mathrm{Step} %d $' % step)
+    else:
+        plt.title(r'$ \mathrm{Step} \  %d \ E=%.1e \ E_{potential}=%.1e \ E_{contact}=%.1e $' %
+              (step, energy, energy_potential, energy_contact))
+    # plt.show()
+    check_mkdir('./img/stable_packing_distrurbed_bottom')
+    plt.savefig('./img/stable_packing_distrurbed_bottom/step_%d.png' % step, dpi=100)
+    plt.close()
 
 
 if __name__ == '__main__':
