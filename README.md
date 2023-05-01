@@ -9,7 +9,7 @@
 ## 求解颗粒系统 Particle systems
 当前难以解决的问题：
 - 无法模拟系统在牛顿第二定律控制下的运动过程；
-- 尚未论证该结果为系统最优结果，目前尚处于近似真实结果的阶段；
+- 尚未论证该结果为系统最优结果，目前尚处于近似真实结果的阶段，或者说只能从现象上说明模拟的真实性，而未能从理论上证明结果的有效性；
 - 如何处理摩擦耗散、粘性问题？
 
 
@@ -75,10 +75,26 @@
 - 实际上，在非晶态的颗粒体系中，一般都采用不规则堆积，不会**由于规则堆积而导致陷入局部最优**。
 
 ### 具有不同级配颗粒材料的自由落体到平衡状态求解
-pending...
+然后我们研究了具有不通颗粒大小的颗粒集合体在该模拟方法下的加载结果：
+
+| ![space-1.jpg](./deepRitz_particle/img/dense_PSD/step_0.png) | ![space-1.jpg](./deepRitz_particle/img/dense_PSD/step_1000.png) |
+|:--:| :--:| 
+| **Initial state** |**Optimized 1000 steps**|
+| ![space-1.jpg](./deepRitz_particle/img/dense_PSD/step_2000.png) | ![space-1.jpg](./deepRitz_particle/img/dense_PSD/step_3000.png) |
+| **Optimized 2000 steps** |**Optimized 3000 steps**|
+| ![space-1.jpg](./deepRitz_particle/img/dense_PSD/step_4000.png) | ![space-1.jpg](./deepRitz_particle/img/dense_PSD/step_5000.png) |
+| **Optimized 4000 steps** |**final state (unstable)**|
 
 ### 颗粒材料伺服固结模拟
-pending...
+此后我们尝试计算颗粒材料在自由落地运动中对边界的压力，计算结果如下
+
+| ![space-1.jpg](./deepRitz_particle/img/dense_PSD_servo/history.png) | ![space-1.jpg](./deepRitz_particle/img/dense_PSD_servo/force.png) |
+|:--:| :--:| 
+| **Initial state** |**Optimized 1000 steps**|
+| ![space-1.jpg](./deepRitz_particle/img/dense_PSD_servo/step_1000.png) | ![space-1.jpg](./deepRitz_particle/img/dense_PSD_servo/step_10000.png) |
+| **Optimized 2000 steps** |**Optimized 3000 steps**|
+
+在该计算中我们统计了具有不平衡力的颗粒，统计所有具有不平衡力的颗粒，分别累加其在X和Y方向的力，因此得到其作用在边界上的力。
 
 ### 颗粒材料简单剪切模拟
 pending...
