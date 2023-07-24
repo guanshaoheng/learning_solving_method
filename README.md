@@ -99,10 +99,4 @@
 ### 颗粒材料简单剪切模拟
 pending...
 
-# Fenics solver tutorial 
-在这里学习Fenics的求解偏微分方程
-## 泊松方程
-
-$ \nabla^{2} u = f \ \ $
-所以
 
